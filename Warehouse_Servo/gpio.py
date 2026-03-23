@@ -26,15 +26,11 @@ GPIO.setup(PWM_GPIO, GPIO.OUT) #set pin as output
 pwm = GPIO.PWM(PWM_GPIO, frequence) #create PWM instance with frequency
 
 #init at 0°
-pwm.start(angle_to_percent(0))
-time.sleep(1)
-
-#go at 90°
-pwm.ChangeDutyCycle(angle_to_percent(90))
+pwm.start(angle_to_percent(70)) #links
 time.sleep(1)
 
 #go at 180°
-pwm.ChangeDutyCycle(angle_to_percent(180))
+pwm.ChangeDutyCycle(angle_to_percent(120)) #rechts
 time.sleep(1)
 
 #close GPIO & cleanup
