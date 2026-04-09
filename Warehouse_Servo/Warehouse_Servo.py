@@ -8,7 +8,7 @@ def on_connect(client, userdata, flags, reason_code):
     print(f"Connected with result code {reason_code}")
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("$SYS/#")
+    #client.subscribe("$SYS/#")
     client.subscribe(TOPIC_CMD)
     # starting with middle position
     servo.middle()
