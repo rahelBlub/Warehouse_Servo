@@ -18,6 +18,9 @@ def on_message(client, userdata, message):
     payload = message.payload.decode()
     print(message.topic+" "+str(message.payload))
 
+def send_motor_command(topic, payload):
+    print(f"Publishing to {topic}: {payload}")
+    client.publish(topic, payload)
 
 # ================= START =================
 
@@ -37,9 +40,8 @@ print("[Service] Warehouse Servo MQTT Service startet")
 #while True:
 #    client.publish(TOPIC_STATUS)
 
-client.loop_stop()
-
-
-def send_motor_command(topic, payload):
-    print(f"Publishing to {topic}: {payload}")
-    client.publish(topic, payload)
+try:
+    while True:
+        pass
+finally:
+    client.loop_stop()
