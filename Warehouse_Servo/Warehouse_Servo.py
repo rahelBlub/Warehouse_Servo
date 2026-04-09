@@ -4,7 +4,7 @@ from servo_skill import ServoSkill
 servo = ServoSkill(PWM_GPIO, 50) # frequence = 50
 
 # The callback for when the client receives a CONNACK response from the server.
-def on_connect(client, userdata, flags, reason_code, properties):
+def on_connect(client, userdata, flags, reason_code):
     print(f"Connected with result code {reason_code}")
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
