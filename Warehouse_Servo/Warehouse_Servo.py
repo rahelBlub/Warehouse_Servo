@@ -54,11 +54,9 @@ def on_message(client, userdata, message):
     payload = message.payload.decode()
     print(message.topic+" "+str(message.payload))
 
-    cmd = payload.get("type")
-
-    if cmd == "left":
+    if payload == "left":
         send_motor_command(TOPIC_CMD, payload)
-    if cmd == "right":
+    if payload == "right":
         send_motor_command(TOPIC_CMD, payload)
 
 
