@@ -19,10 +19,6 @@ def on_connect(client, userdata, flags, rc):
         client.subscribe(TOPIC_CMD)
         # client.subscribe("$SYS/#")
         time.sleep(1)
-        servo.left()
-        time.sleep(1)
-        servo.right()
-        time.sleep(1)
         servo.middle() # starting with middle position
     else:
         print(f'Failed to connect, return code {rc}')
@@ -57,6 +53,14 @@ def on_message(client, userdata, message):
     topic = message.topic
     payload = message.payload.decode()
     print(message.topic+" "+str(message.payload))
+
+    cmd = payload.get("type")
+
+    if cmd == "left":
+        send_motor_command(TOPIC_CMD, payload)
+    if cmd == "right":
+        send_motor_command(TOPIC_CMD, payload)
+
 
 # ================= START =================
 
