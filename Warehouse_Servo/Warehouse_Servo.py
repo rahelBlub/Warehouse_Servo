@@ -6,6 +6,7 @@ from mqtt_config import *
 from servo_skill import ServoSkill
 
 servo = ServoSkill(PWM_GPIO, 50) # frequency = 50
+skill_lock = threading.Lock()
 
 FIRST_RECONNECT_DELAY = 1
 RECONNECT_RATE = 2
@@ -45,9 +46,22 @@ def on_disconnect(client, userdata, rc):
         reconnect_count += 1
     logging.info("Reconnect failed after %s attempts. Exiting...", reconnect_count)
 
-def send_motor_command(topic, payload):
-    print(f"Publishing to {topic}: {payload}")
-    client.publish(topic, payload)
+def send_motor_command(func, topic, payload):
+    def wrapper():
+        try:
+            print(f"Publishing to {topic}: {payload}")
+            client.publish(topic, payload)
+            func()
+        except Exception as e:
+            client.publish(TOPIC_STATUS, json.dumps({
+                "state": "error",
+                "msg": str(e),
+                "cmd": payload,
+            }))
+        finally:
+            skill_lock.release()
+    skill_lock.acquire()
+    threading.Thread(target=wrapper).start()
 
 def on_message(client, userdata, message):
     topic = message.topic
@@ -55,9 +69,9 @@ def on_message(client, userdata, message):
     print(message.topic+" "+str(message.payload))
 
     if payload == "left":
-        send_motor_command(TOPIC_CMD, payload)
+        send_motor_command(servo.left(), TOPIC_CMD, payload)
     if payload == "right":
-        send_motor_command(TOPIC_CMD, payload)
+        send_motor_command(servo.right(), TOPIC_CMD, payload)
 
 
 # ================= START =================
