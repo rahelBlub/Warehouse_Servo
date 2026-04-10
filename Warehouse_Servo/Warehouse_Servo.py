@@ -47,30 +47,29 @@ def on_disconnect(client, userdata, rc):
     logging.info("Reconnect failed after %s attempts. Exiting...", reconnect_count)
 
 def execute_command(topic, payload):
-    def wrapper():
-        try:
-            print(f"Publishing to {topic}: {payload}")
-            client.publish(topic, payload)
+    try:
+        print(f"Publishing to {topic}: {payload}")
+        client.publish(topic, payload)
 
-            if payload == "left":
-                servo.left()
-            if payload == "right":
-                servo.right()
-            else:
-                client.publish(TOPIC_STATUS, json.dumps({
-                    "state": "error",
-                    "msg": f"unknown command {payload}",
-                }))
-                return
-
-        except Exception as e:
+        if payload == "left":
+            servo.left()
+        if payload == "right":
+            servo.right()
+        else:
             client.publish(TOPIC_STATUS, json.dumps({
                 "state": "error",
-                "msg": str(e),
-                "cmd": payload,
+                "msg": f"unknown command {payload}",
             }))
-        finally:
-            skill_lock.release()
+            return
+
+     except Exception as e:
+        client.publish(TOPIC_STATUS, json.dumps({
+            "state": "error",
+            "msg": str(e),
+            "cmd": payload,
+        }))
+    finally:
+        skill_lock.release()
 
 def on_message(client, userdata, message):
     try:
