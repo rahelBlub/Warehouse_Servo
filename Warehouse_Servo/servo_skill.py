@@ -38,7 +38,7 @@ class ServoSkill:
 
     def middle(self):
         print("Turning middle")
-        self.pwm.ChangeDutyCycle(self.angle_to_percent(50)) #mitte
+        self.pwm.ChangeDutyCycle(self.angle_to_percent(90)) #mitte
         time.sleep(1)
 
     def close(self):
