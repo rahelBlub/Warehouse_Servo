@@ -19,6 +19,10 @@ def on_connect(client, userdata, flags, rc):
         client.subscribe(TOPIC_CMD)
         # client.subscribe("$SYS/#")
         time.sleep(1)
+        servo.left()
+        time.sleep(1)
+        servo.right()
+        time.sleep(1)
         servo.middle() # starting with middle position
     else:
         print(f'Failed to connect, return code {rc}')
