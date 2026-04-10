@@ -85,7 +85,7 @@ def on_message(client, userdata, message):
 
         threading.Thread(
             target=execute_command,
-            args=(topic, payload, client)
+            args=(topic, payload)
         ).start()
 
     except Exception as e:
