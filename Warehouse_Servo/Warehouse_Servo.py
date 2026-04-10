@@ -13,14 +13,14 @@ def on_connect(client, userdata, flags, reason_code):
     # starting with middle position
     servo.middle()
 
+def send_motor_command(topic, payload):
+    print(f"Publishing to {topic}: {payload}")
+    client.publish(topic, payload)
+
 def on_message(client, userdata, message):
     topic = message.topic
     payload = message.payload.decode()
     print(message.topic+" "+str(message.payload))
-
-def send_motor_command(topic, payload):
-    print(f"Publishing to {topic}: {payload}")
-    client.publish(topic, payload)
 
 # ================= START =================
 
