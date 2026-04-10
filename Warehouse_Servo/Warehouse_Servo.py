@@ -18,7 +18,9 @@ def on_connect(client, userdata, flags, rc):
         print("Connected to MQTT Broker!")
         client.subscribe(TOPIC_CMD)
         # client.subscribe("$SYS/#")
-        servo.middle() # starting with middle position
+        time.sleep(1)
+        servo.left()
+        #servo.middle() # starting with middle position
     else:
         print(f'Failed to connect, return code {rc}')
     # Subscribing in on_connect() means that if we lose the connection and
