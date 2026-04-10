@@ -46,12 +46,23 @@ def on_disconnect(client, userdata, rc):
         reconnect_count += 1
     logging.info("Reconnect failed after %s attempts. Exiting...", reconnect_count)
 
-def send_motor_command(func, topic, payload):
+def execute_command(topic, payload):
     def wrapper():
         try:
             print(f"Publishing to {topic}: {payload}")
             client.publish(topic, payload)
-            func()
+
+            if payload == "left":
+                servo.left()
+            if payload == "right":
+                servo.right()
+            else:
+                client.publish(TOPIC_STATUS, json.dumps({
+                    "state": "error",
+                    "msg": f"unknown command {payload}",
+                }))
+                return
+
         except Exception as e:
             client.publish(TOPIC_STATUS, json.dumps({
                 "state": "error",
@@ -60,20 +71,29 @@ def send_motor_command(func, topic, payload):
             }))
         finally:
             skill_lock.release()
-    skill_lock.acquire()
-    threading.Thread(target=wrapper).start()
 
 def on_message(client, userdata, message):
-    topic = message.topic
-    payload = message.payload.decode()
-    print(message.topic+" "+str(message.payload))
+    try:
+        topic = message.topic
+        payload = message.payload.decode()
+        print(message.topic+" "+str(message.payload))
 
-    if payload == "left":
-        send_motor_command(servo.left(), TOPIC_CMD, payload)
-    if payload == "right":
-        send_motor_command(servo.right(), TOPIC_CMD, payload)
+        if skill_lock.locked():
+            print("System busy")
+            return
 
+        skill_lock.acquire()
 
+        threading.Thread(
+            target=execute_command,
+            args=(payload, client)
+        ).start()
+
+    except Exception as e:
+        client.publish(TOPIC_STATUS, json.dumps({
+            "state": "error",
+            "msg": str(e),
+        }))
 # ================= START =================
 
 #client = mqtt.Client(client_id=CLIENT_ID, protocol=mqtt.MQTTv311)
