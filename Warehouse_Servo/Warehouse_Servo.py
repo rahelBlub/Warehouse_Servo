@@ -53,7 +53,7 @@ def execute_command(topic, payload):
 
         if payload == "left":
             servo.left()
-        if payload == "right":
+        elif payload == "right":
             servo.right()
         else:
             client.publish(TOPIC_STATUS, json.dumps({
@@ -62,7 +62,7 @@ def execute_command(topic, payload):
             }))
             return
 
-     except Exception as e:
+    except Exception as e:
         client.publish(TOPIC_STATUS, json.dumps({
             "state": "error",
             "msg": str(e),
