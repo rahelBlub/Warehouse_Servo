@@ -5,13 +5,14 @@ import time
 from mqtt_config import *
 from servo_skill import ServoSkill
 
-servo = ServoSkill(PWM_GPIO, 50) # frequency = 50
+servo = ServoSkill(PWM_GPIO, 50)  # frequency = 50
 skill_lock = threading.Lock()
 
 FIRST_RECONNECT_DELAY = 1
 RECONNECT_RATE = 2
 MAX_RECONNECT_COUNT = 12
 MAX_RECONNECT_DELAY = 60
+
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -20,7 +21,7 @@ def on_connect(client, userdata, flags, rc):
         client.subscribe(TOPIC_CMD)
         # client.subscribe("$SYS/#")
         time.sleep(1)
-        servo.middle() # starting with middle position
+        servo.middle()  # starting with middle position
     else:
         print(f'Failed to connect, return code {rc}')
     # Subscribing in on_connect() means that if we lose the connection and
@@ -45,6 +46,7 @@ def on_disconnect(client, userdata, rc):
         reconnect_delay = min(reconnect_delay, MAX_RECONNECT_DELAY)
         reconnect_count += 1
     logging.info("Reconnect failed after %s attempts. Exiting...", reconnect_count)
+
 
 def execute_command(topic, payload):
     try:
@@ -71,11 +73,12 @@ def execute_command(topic, payload):
     finally:
         skill_lock.release()
 
+
 def on_message(client, userdata, message):
     try:
         topic = message.topic
         payload = message.payload.decode()
-        print("topic:"+message.topic+", payload:"+str(message.payload), ", QoS="+ message.qos)
+        print("topic: " + message.topic + ", payload: " + str(message.payload), ", QoS= " + message.qos)
 
         if skill_lock.locked():
             print("System busy")
@@ -93,6 +96,8 @@ def on_message(client, userdata, message):
             "state": "error",
             "msg": str(e),
         }))
+
+
 # ================= START =================
 
 #client = mqtt.Client(client_id=CLIENT_ID, protocol=mqtt.MQTTv311)
