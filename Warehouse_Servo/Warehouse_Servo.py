@@ -58,6 +58,8 @@ def execute_command(topic, payload):
             servo.left()
         elif payload == "right":
             servo.right()
+        elif payload == "middle":
+            servo.middle()
         else:
             client.publish(TOPIC_STATUS, json.dumps({
                 "state": "error",
