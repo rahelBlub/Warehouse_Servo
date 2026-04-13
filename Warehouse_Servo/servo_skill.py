@@ -14,6 +14,7 @@ class ServoSkill:
         GPIO.setup(PWM_GPIO, GPIO.OUT) #set pin as output
 
         self.pwm = GPIO.PWM(PWM_GPIO, frequency)
+        self.pwm.start(self.angle_to_percent(90))
 
     def angle_to_percent(self, angle):
         if angle > 180 or angle < 0:
@@ -28,7 +29,7 @@ class ServoSkill:
 
     def left(self):
         print("Turning left")
-        self.pwm.start(self.angle_to_percent(70)) #links
+        self.pwm.ChangeDutyCycle(self.angle_to_percent(70)) #links
         time.sleep(1)
         print("finished skill left")
 
