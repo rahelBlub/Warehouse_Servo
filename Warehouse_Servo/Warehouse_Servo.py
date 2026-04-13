@@ -49,6 +49,7 @@ def on_disconnect(client, userdata, rc):
 
 
 def execute_command(topic, payload):
+    print("execute command")
     try:
         print(f"Publishing to {topic}: {payload}")
         client.publish(topic, payload)
