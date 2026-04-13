@@ -78,6 +78,7 @@ def execute_command(topic, payload):
 def on_message(client, userdata, message):
     print("message received")
     try:
+        print("try error?")
         topic = message.topic
         payload = message.payload.decode()
         print("topic: " + message.topic + ", payload: " + str(message.payload) + ", QoS= " + message.qos)
