@@ -29,7 +29,7 @@ class ServoSkill:
 
     def left(self):
         print("Turning left")
-        self.pwm.ChangeDutyCycle(self.angle_to_percent(70)) #links
+        self.pwm.ChangeDutyCycle(self.angle_to_percent(60)) #links
         time.sleep(1)
         self.pwm.ChangeDutyCycle(self.angle_to_percent(90))
         time.sleep(1)
