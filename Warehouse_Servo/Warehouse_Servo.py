@@ -75,6 +75,7 @@ def execute_command(topic, payload):
 
 
 def on_message(client, userdata, message):
+    print("message received")
     try:
         topic = message.topic
         payload = message.payload.decode()
