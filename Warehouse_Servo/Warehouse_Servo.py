@@ -52,7 +52,7 @@ def execute_command(topic, payload):
     print("execute command")
     try:
         print(f"Publishing to {topic}: {payload}")
-        client.publish(TOPIC_CMD, payload)
+        client.publish(TOPIC_STATUS, payload)
 
         if payload == "left":
             servo.left()
