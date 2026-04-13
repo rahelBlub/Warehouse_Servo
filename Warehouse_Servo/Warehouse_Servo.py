@@ -75,7 +75,7 @@ def on_message(client, userdata, message):
     try:
         topic = message.topic
         payload = message.payload.decode()
-        print(message.topic+" "+str(message.payload))
+        print(message.topic+" "+str(message.payload), message.qos)
 
         if skill_lock.locked():
             print("System busy")
