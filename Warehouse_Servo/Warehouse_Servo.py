@@ -116,5 +116,5 @@ try:
     while True:
         pass
 finally:
-    servo.close()
+    #servo.close()
     client.loop_stop()
