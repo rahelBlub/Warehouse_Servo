@@ -30,16 +30,19 @@ class ServoSkill:
         print("Turning left")
         self.pwm.start(self.angle_to_percent(70)) #links
         time.sleep(1)
+        print("finished skill left")
 
     def right(self):
         print("Turning right")
         self.pwm.ChangeDutyCycle(self.angle_to_percent(120)) #rechts
         time.sleep(1)
+        print("finished skill right")
 
     def middle(self):
         print("Turning middle")
         self.pwm.ChangeDutyCycle(self.angle_to_percent(90)) #mitte
         time.sleep(1)
+        print("finished skill middle")
 
     def close(self):
         #close GPIO & cleanup

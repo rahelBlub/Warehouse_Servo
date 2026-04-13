@@ -75,7 +75,7 @@ def on_message(client, userdata, message):
     try:
         topic = message.topic
         payload = message.payload.decode()
-        print(message.topic+" "+str(message.payload), message.qos)
+        print("topic:"+message.topic+", payload:"+str(message.payload), ", QoS="+ message.qos)
 
         if skill_lock.locked():
             print("System busy")
@@ -116,4 +116,5 @@ try:
     while True:
         pass
 finally:
+    servo.close()
     client.loop_stop()
