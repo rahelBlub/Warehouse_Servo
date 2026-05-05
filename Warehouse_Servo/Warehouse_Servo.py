@@ -68,6 +68,7 @@ def execute_command(topic, payload):
 
 def on_message(client, userdata, message):
     print("message received")
+
     try:
         topic = message.topic
         payload = message.payload.decode()
@@ -81,6 +82,8 @@ def on_message(client, userdata, message):
 
         with skill_lock:
             execute_command(topic, payload)
+
+        skill_lock.release()
 
     except Exception as e:
         client.publish(TOPIC_STATUS, json.dumps({
