@@ -49,26 +49,36 @@ def on_disconnect(client, userdata, rc):
 
 
 def execute_command(topic, payload):
-    print(f"Publishing to {topic}: {payload}")
-    client.publish(TOPIC_STATUS, payload)
+    print("execute command")
+    try:
+        print(f"Publishing to {topic}: {payload}")
+        client.publish(TOPIC_STATUS, payload)
 
-    if payload == "left":
-        servo.left()
-    elif payload == "right":
-        servo.right()
-    elif payload == "middle":
-        servo.middle()
-    else:
+        if payload == "left":
+            servo.left()
+        elif payload == "right":
+            servo.right()
+        elif payload == "middle":
+            servo.middle()
+        else:
+            client.publish(TOPIC_STATUS, json.dumps({
+                "state": "error",
+                "msg": f"unknown command {payload}",
+            }))
+            return
+
+    except Exception as e:
         client.publish(TOPIC_STATUS, json.dumps({
             "state": "error",
-            "msg": f"unknown command {payload}",
+            "msg": str(e),
+            "cmd": payload,
         }))
-        return
+    finally:
+        skill_lock.release()
 
 
 def on_message(client, userdata, message):
     print("message received")
-
     try:
         topic = message.topic
         payload = message.payload.decode()
@@ -80,10 +90,10 @@ def on_message(client, userdata, message):
 
         skill_lock.acquire()
 
-        with skill_lock:
-            execute_command(topic, payload)
-
-        skill_lock.release()
+        threading.Thread(
+            target=execute_command,
+            args=(topic, payload)
+        ).start()
 
     except Exception as e:
         client.publish(TOPIC_STATUS, json.dumps({
