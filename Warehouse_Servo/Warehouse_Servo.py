@@ -5,7 +5,8 @@ import time
 from mqtt_config import *
 from servo_skill import ServoSkill
 
-servo = ServoSkill(PWM_GPIO, 50)  # frequency = 50
+global servo
+#servo = ServoSkill(PWM_GPIO, 50)  # frequency = 50
 skill_lock = threading.Lock()
 
 FIRST_RECONNECT_DELAY = 1
@@ -21,7 +22,9 @@ def on_connect(client, userdata, flags, rc):
         client.subscribe(TOPIC_CMD)
         # client.subscribe("$SYS/#")
         time.sleep(1)
-        servo.middle()  # starting with middle position
+        if servo is None:
+            servo = ServoSkill(PWM_GPIO, 50)
+
     else:
         print(f'Failed to connect, return code {rc}')
     # Subscribing in on_connect() means that if we lose the connection and
@@ -123,7 +126,7 @@ print("[Service] Warehouse Servo MQTT Service startet")
 
 try:
     while True:
-        pass
+        time.sleep(1)
 finally:
     #servo.close()
     client.loop_stop()

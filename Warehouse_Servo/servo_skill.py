@@ -14,7 +14,10 @@ class ServoSkill:
         GPIO.setup(PWM_GPIO, GPIO.OUT) #set pin as output
 
         self.pwm = GPIO.PWM(PWM_GPIO, frequency)
-        self.pwm.start(self.angle_to_percent(90))
+        #self.pwm.start(self.angle_to_percent(90))
+        self.pwm.start(0)
+        time.sleep(0.5)
+        self.middle() # starting with middle position
 
     def angle_to_percent(self, angle):
         if angle > 180 or angle < 0:
