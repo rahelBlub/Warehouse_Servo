@@ -5,7 +5,6 @@ import time
 from mqtt_config import *
 from servo_skill import ServoSkill
 
-global servo
 #servo = ServoSkill(PWM_GPIO, 50)  # frequency = 50
 skill_lock = threading.Lock()
 
@@ -17,18 +16,17 @@ MAX_RECONNECT_DELAY = 60
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
+    global servo
     if rc == 0 and client.is_connected():
         print("Connected to MQTT Broker!")
         client.subscribe(TOPIC_CMD)
         # client.subscribe("$SYS/#")
         time.sleep(1)
-        if servo is None:
-            servo = ServoSkill(PWM_GPIO, 50)
+        servo = ServoSkill(PWM_GPIO, 50)
 
     else:
         print(f'Failed to connect, return code {rc}')
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
+    # Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
 
 
 def on_disconnect(client, userdata, rc):
