@@ -24,12 +24,13 @@ class ServoSkill:
         if angle > 180 or angle < 0:
             return False
         else:
-            start = 4
-            end = 12.5
-            ratio = (end - start) / 180
+           # start = 4
+            #end = 12.5
+            #ratio = (end - start) / 180
+            #angle_as_percent = angle * ratio
+            #duty_cycle = start + angle_as_percent
 
-            angle_as_percent = angle * ratio
-            duty_cycle = start + angle_as_percent
+            duty_cycle = (angle / 18) + 2.5 # Convert angle to duty cycle
             self.pwm.ChangeDutyCycle(duty_cycle)
         return None
 
