@@ -1,6 +1,10 @@
 # Warehouse_Servo
 
-connect the yellow PIN to GPIO PIN 12
-black to GND and red to 5V
+connect the signal-PIN (yellow/orange) to PIN 12 (GPIO 18)
+
+connect the Ground-PIN (black) to GND 
+
+connect the VCC-PIN (red) to 5V - it is recommended to use an external power supply and not the 5V PIN from the Pi,
+because the servo(s) will cause the voltage to fluctuate significantly, which is a bad situation for the Pi.
 
 start the service with: python3 Warehouse_Servo.py
