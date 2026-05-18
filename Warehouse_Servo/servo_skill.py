@@ -15,8 +15,8 @@ class ServoSkill:
         time.sleep(1)
         self.pwm = GPIO.PWM(pwm, frequency)
         time.sleep(1)
-        self.pwm.start(self.angle_to_percent(90))
-        #self.pwm.start(0)
+        #self.pwm.start(self.angle_to_percent(90))
+        self.pwm.start(0)
         #time.sleep(2)
         #self.middle() # starting with middle position
 

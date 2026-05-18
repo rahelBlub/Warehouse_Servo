@@ -16,13 +16,12 @@ MAX_RECONNECT_DELAY = 60
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
-    global servo
+    #global servo
     if rc == 0 and client.is_connected():
         print("Connected to MQTT Broker!")
         client.subscribe(TOPIC_CMD)
-        # client.subscribe("$SYS/#")
-        time.sleep(2)
-        servo = ServoSkill(PWM_GPIO, 50)
+        time.sleep(1)
+        #servo = ServoSkill(PWM_GPIO, 50)
 
     else:
         print(f'Failed to connect, return code {rc}')
@@ -51,6 +50,7 @@ def on_disconnect(client, userdata, rc):
 
 def execute_command(topic, payload):
     print("execute command")
+    servo = ServoSkill(PWM_GPIO, 50)
     try:
         print(f"Publishing to {topic}: {payload}")
         client.publish(TOPIC_STATUS, payload)
@@ -76,6 +76,7 @@ def execute_command(topic, payload):
         }))
     finally:
         skill_lock.release()
+        servo.close()
 
 
 def on_message(client, userdata, message):
