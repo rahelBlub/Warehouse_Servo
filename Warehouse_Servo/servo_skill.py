@@ -17,7 +17,7 @@ class ServoSkill:
         time.sleep(1)
         #self.pwm.start(self.angle_to_percent(90))
         self.pwm.start(0)
-        #time.sleep(2)
+        time.sleep(2)
         #self.middle() # starting with middle position
 
     def angle_to_percent(self, angle):
@@ -58,4 +58,5 @@ class ServoSkill:
     def close(self):
         #close GPIO & cleanup
         self.pwm.stop()
+        time.sleep(1)
         GPIO.cleanup()

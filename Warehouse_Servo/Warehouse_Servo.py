@@ -22,7 +22,6 @@ def on_connect(client, userdata, flags, rc):
         print("Connected to MQTT Broker!")
         client.subscribe(TOPIC_CMD)
         time.sleep(1)
-        #servo = ServoSkill(PWM_GPIO, 50)
 
     else:
         print(f'Failed to connect, return code {rc}')
