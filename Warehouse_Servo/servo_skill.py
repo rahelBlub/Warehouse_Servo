@@ -3,7 +3,7 @@
 import RPi.GPIO as GPIO
 import time
 
-from mqtt_config import PWM_GPIO
+#from mqtt_config import PWM_GPIO
 
 class ServoSkill:
     def __init__(self, pwm, frequency):
@@ -11,13 +11,14 @@ class ServoSkill:
 
         GPIO.setmode(GPIO.BOARD) #use physical pin numbering/ Board numerotation mode
         GPIO.setwarnings(False) #disable warnings
-        GPIO.setup(PWM_GPIO, GPIO.OUT) #set pin as output
-
-        self.pwm = GPIO.PWM(PWM_GPIO, frequency)
-        #self.pwm.start(self.angle_to_percent(90))
-        self.pwm.start(0)
-        time.sleep(0.5)
-        self.middle() # starting with middle position
+        GPIO.setup(pwm, GPIO.OUT) #set pin as output
+        time.sleep(1)
+        self.pwm = GPIO.PWM(pwm, frequency)
+        time.sleep(1)
+        self.pwm.start(self.angle_to_percent(90))
+        #self.pwm.start(0)
+        #time.sleep(2)
+        #self.middle() # starting with middle position
 
     def angle_to_percent(self, angle):
         if angle > 180 or angle < 0:

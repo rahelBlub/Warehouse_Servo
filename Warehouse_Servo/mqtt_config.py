@@ -8,11 +8,11 @@ MQTT_PASS="isomalt"
 #CLIENT_ID = "WebClient"
 
 # ===== ROBOT =====
-SERIAL_PORT="/dev/ttyAMA0"
-BAUD=1000000
+#SERIAL_PORT="/dev/ttyAMA0"
+#BAUD=1000000
 
 # ===== SERVO GPIO =====
-PWM_GPIO=12
+PWM_GPIO=12 # GPIO = 18
 
 # ===== Topics ======
 TOPIC_CMD = "warehouse/command"
