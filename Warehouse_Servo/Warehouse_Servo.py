@@ -5,6 +5,7 @@ import time
 from mqtt_config import *
 from servo_skill import ServoSkill
 
+SERVO_FREQUENCY = 50
 #servo = ServoSkill(PWM_GPIO, 50)  # frequency = 50
 skill_lock = threading.Lock()
 
@@ -25,7 +26,6 @@ def on_connect(client, userdata, flags, rc):
 
     else:
         print(f'Failed to connect, return code {rc}')
-    # Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
 
 
 def on_disconnect(client, userdata, rc):
@@ -50,7 +50,7 @@ def on_disconnect(client, userdata, rc):
 
 def execute_command(topic, payload):
     print("execute command")
-    servo = ServoSkill(PWM_GPIO, 50)
+    servo = ServoSkill(PWM_GPIO, SERVO_FREQUENCY)
     try:
         print(f"Publishing to {topic}: {payload}")
         client.publish(TOPIC_STATUS, payload)
