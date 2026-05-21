@@ -3,15 +3,22 @@ import time
 
 class Skillset:
     def __init__(self, pwm):
+        self.pwm = pwm
         self.pi = pigpio.pi()
         time.sleep(1)
         self.pi.set_mode(pwm, pigpio.OUTPUT)
 
     def left(self):
         print("Turning left")
-        self.pi.set_servo_pulsewidth(18, 1000)
+        self.pi.set_servo_pulsewidth(self.pwm, 1000)
         time.sleep(0.5)
-        self.pi.set_servo_pulsewidth(18, 1500)
+        self.pi.set_servo_pulsewidth(self.pwm, 1200)
+        time.sleep(0.5)
+        self.pi.set_servo_pulsewidth(self.pwm, 1500)
+        time.sleep(0.5)
+        self.pi.set_servo_pulsewidth(self.pwm, 1700)
+        time.sleep(0.5)
+        self.pi.set_servo_pulsewidth(self.pwm, 2000)
         time.sleep(0.5)
         print("finished skill left")
 
