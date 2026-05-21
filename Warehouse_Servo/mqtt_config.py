@@ -13,6 +13,7 @@ MQTT_PASS="isomalt"
 
 # ===== SERVO GPIO =====
 PWM_GPIO=12 # GPIO = 18
+PI_GPIO=18
 
 # ===== Topics ======
 TOPIC_CMD = "warehouse/command"

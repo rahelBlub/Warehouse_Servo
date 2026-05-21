@@ -4,6 +4,7 @@ import json
 import time
 from mqtt_config import *
 from servo_skill import ServoSkill
+from skills import Skillset
 
 SERVO_FREQUENCY = 50
 skill_lock = threading.Lock()
@@ -113,7 +114,8 @@ client.on_message = on_message
 client.on_disconnect = on_disconnect
 
 client.connect(MQTT_BROKER, MQTT_PORT)
-servo = ServoSkill(PWM_GPIO, SERVO_FREQUENCY)
+#servo = ServoSkill(PWM_GPIO, SERVO_FREQUENCY)
+servo = Skillset(PI_GPIO)
 client.loop_start()
 
 print("[Service] Warehouse Servo MQTT Service")
