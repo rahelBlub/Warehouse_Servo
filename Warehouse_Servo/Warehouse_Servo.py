@@ -101,8 +101,6 @@ def on_message(client, userdata, message):
             "state": "error",
             "msg": str(e),
         }))
-    #finally:
-        #servo.close()
 
 # ================= START =================
 
