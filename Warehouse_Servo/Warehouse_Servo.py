@@ -20,12 +20,14 @@ def on_connect(client, userdata, flags, rc):
     global servo
     if rc == 0 and client.is_connected():
         print("Connected to MQTT Broker!")
+        logging.info("Connected to MQTT Broker!")
         client.subscribe(TOPIC_CMD)
         time.sleep(1)
         servo = ServoSkill(PWM_GPIO, SERVO_FREQUENCY)
 
     else:
         print(f'Failed to connect, return code {rc}')
+        logging.info(f'Failed to connect, return code {rc}')
 
 
 def on_disconnect(client, userdata, rc):
