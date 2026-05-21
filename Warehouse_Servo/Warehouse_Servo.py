@@ -104,24 +104,28 @@ def on_message(client, userdata, message):
         #servo.close()
 
 # ================= START =================
-if __name__ == "__main__":
-    #client = mqtt.Client(client_id=CLIENT_ID, protocol=mqtt.MQTTv311)
-    client = mqtt.Client()
-    client.username_pw_set(MQTT_USER, MQTT_PASS)
 
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.on_disconnect = on_disconnect
+client = mqtt.Client()
+client.username_pw_set(MQTT_USER, MQTT_PASS)
 
-    client.connect(MQTT_BROKER, MQTT_PORT)
-    servo = ServoSkill(PWM_GPIO, SERVO_FREQUENCY)
-    client.loop_start()
+client.on_connect = on_connect
+client.on_message = on_message
+client.on_disconnect = on_disconnect
 
-    print("[Service] Warehouse Servo MQTT Service")
+client.connect(MQTT_BROKER, MQTT_PORT)
+servo = ServoSkill(PWM_GPIO, SERVO_FREQUENCY)
+client.loop_start()
 
-    try:
-        while True:
-            time.sleep(1)
-    finally:
-        servo.close()
-        client.loop_stop()
+print("[Service] Warehouse Servo MQTT Service")
+
+try:
+    while True:
+        time.sleep(1)
+
+except KeyboardInterrupt:
+        print("\n[Service] Manuell beendet (Strg+C)")
+
+finally:
+    client.loop_stop()
+    servo.close()
+
