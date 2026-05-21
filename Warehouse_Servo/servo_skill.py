@@ -30,27 +30,33 @@ class ServoSkill:
             duty_cycle = start + angle_as_percent
 
             #duty_cycle = (angle / 18) + 2.5 # Convert angle to duty cycle
-            return self.pwm.ChangeDutyCycle(duty_cycle)
+            #return self.pwm.ChangeDutyCycle(duty_cycle)
+            return duty_cycle
 
     def left(self):
         print("Turning left")
-        self.angle_to_percent(60) #links
+        self.pwm.ChangeDutyCycle(self.angle_to_percent(60))
+        #self.angle_to_percent(60) #links
         time.sleep(1)
-        self.angle_to_percent(90)
+        self.pwm.ChangeDutyCycle(self.angle_to_percent(90))
+        #self.angle_to_percent(90)
         time.sleep(1)
         print("finished skill left")
 
     def right(self):
         print("Turning right")
-        self.angle_to_percent(120) #rechts
+        self.pwm.ChangeDutyCycle(self.angle_to_percent(120))
+        #self.angle_to_percent(120) #rechts
         time.sleep(1)
-        self.angle_to_percent(90)
+        self.pwm.ChangeDutyCycle(self.angle_to_percent(90))
+        #self.angle_to_percent(90)
         time.sleep(1)
         print("finished skill right")
 
     def middle(self):
         print("Turning middle")
-        self.angle_to_percent(90) #mitte
+        self.pwm.ChangeDutyCycle(self.angle_to_percent(90))
+        #self.angle_to_percent(90) #mitte
         time.sleep(1)
         print("finished skill middle")
 
