@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #-- coding: utf-8 --
 import RPi.GPIO as GPIO
+#from gpiozero import Servo
 import time
 
 #from mqtt_config import PWM_GPIO
@@ -63,4 +64,5 @@ class ServoSkill:
     def close(self):
         #close GPIO & cleanup
         self.pwm.stop()
+        del self.pwm
         GPIO.cleanup()
