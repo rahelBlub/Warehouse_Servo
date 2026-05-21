@@ -5,14 +5,9 @@ MQTT_BROKER= "141.19.44.65"
 MQTT_PORT= 18443
 MQTT_USER="suedzucker"
 MQTT_PASS="isomalt"
-#CLIENT_ID = "WebClient"
-
-# ===== ROBOT =====
-#SERIAL_PORT="/dev/ttyAMA0"
-#BAUD=1000000
 
 # ===== SERVO GPIO =====
-PWM_GPIO=12 # GPIO = 18
+PWM_GPIO=12
 PI_GPIO=18
 
 # ===== Topics ======

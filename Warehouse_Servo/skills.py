@@ -32,5 +32,5 @@ class Skillset:
 
     def close(self):
         # switch servo off
-        self.pi.set_servo_pulsewidth(18, 0)
+        self.pi.set_servo_pulsewidth(self.pwm, 0)
         self.pi.stop()
