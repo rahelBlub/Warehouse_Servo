@@ -30,8 +30,7 @@ class ServoSkill:
             #duty_cycle = start + angle_as_percent
 
             duty_cycle = (angle / 18) + 2.5 # Convert angle to duty cycle
-            self.pwm.ChangeDutyCycle(duty_cycle)
-        return None
+            return self.pwm.ChangeDutyCycle(duty_cycle)
 
     def left(self):
         print("Turning left")
