@@ -18,3 +18,12 @@ run the script with:
 ````bash
 python3 Warehouse_Servo.py
 ````
+
+create a .env file with the following variables:
+
+````python
+MQTT_BROKER=
+MQTT_PORT=
+MQTT_USER=
+MQTT_PASS=
+````
