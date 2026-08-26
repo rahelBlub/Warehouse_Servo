@@ -3,7 +3,6 @@ import threading
 import json
 import time
 from mqtt_config import *
-from servo_skill import ServoSkill
 from skills import Skillset
 
 SERVO_FREQUENCY = 50
@@ -14,9 +13,6 @@ MAX_RECONNECT_COUNT = 12
 MAX_RECONNECT_DELAY = 60
 
 
-# starting pigpio daemon on Pi with sudo pigpiod
-
-# The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     global servo
     if rc == 0 and client.is_connected():
@@ -36,7 +32,6 @@ def on_connect(client, userdata, flags, rc):
             "state": "offline",
             "online": False,
         })
-
 
 def on_disconnect(client, userdata, rc):
     logging.info("Disconnected with result code: %s", rc)
@@ -131,7 +126,6 @@ client.on_message = on_message
 client.on_disconnect = on_disconnect
 
 client.connect(MQTT_BROKER, MQTT_PORT)
-# servo = ServoSkill(PWM_GPIO, SERVO_FREQUENCY)
 servo = Skillset(PI_GPIO)
 client.loop_start()
 

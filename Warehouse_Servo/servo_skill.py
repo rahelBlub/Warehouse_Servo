@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 #-- coding: utf-8 --
 import RPi.GPIO as GPIO
-#from gpiozero import Servo
 import time
-
-#from mqtt_config import PWM_GPIO
 
 class ServoSkill:
     def __init__(self, pwm, frequency):
@@ -17,7 +14,6 @@ class ServoSkill:
         self.pwm = GPIO.PWM(pwm, frequency)
         time.sleep(0.5)
         self.pwm.start(self.angle_to_percent(90))
-        #self.pwm.start(0)
         time.sleep(0.5)
 
     def angle_to_percent(self, angle):
@@ -29,40 +25,31 @@ class ServoSkill:
             ratio = (end - start) / 180
             angle_as_percent = angle * ratio
             duty_cycle = start + angle_as_percent
-
-            #duty_cycle = (angle / 18) + 2.5 # Convert angle to duty cycle
-            #return self.pwm.ChangeDutyCycle(duty_cycle)
             return duty_cycle
 
     def left(self):
         print("Turning left")
         self.pwm.ChangeDutyCycle(self.angle_to_percent(60))
-        #self.angle_to_percent(60) #links
         time.sleep(1)
         self.pwm.ChangeDutyCycle(self.angle_to_percent(90))
-        #self.angle_to_percent(90)
         time.sleep(1)
         print("finished skill left")
 
     def right(self):
         print("Turning right")
         self.pwm.ChangeDutyCycle(self.angle_to_percent(120))
-        #self.angle_to_percent(120) #rechts
         time.sleep(1)
         self.pwm.ChangeDutyCycle(self.angle_to_percent(90))
-        #self.angle_to_percent(90)
         time.sleep(1)
         print("finished skill right")
 
     def middle(self):
         print("Turning middle")
         self.pwm.ChangeDutyCycle(self.angle_to_percent(90))
-        #self.angle_to_percent(90) #mitte
         time.sleep(1)
         print("finished skill middle")
 
     def close(self):
-        #close GPIO & cleanup
         self.pwm.stop()
         del self.pwm
         GPIO.cleanup()
