@@ -12,6 +12,8 @@ FIRST_RECONNECT_DELAY = 1
 RECONNECT_RATE = 2
 MAX_RECONNECT_COUNT = 12
 MAX_RECONNECT_DELAY = 60
+
+
 # starting pigpio daemon on Pi with sudo pigpiod
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -22,14 +24,26 @@ def on_connect(client, userdata, flags, rc):
         logging.info("Connected to MQTT Broker!")
         client.subscribe(TOPIC_CMD)
         time.sleep(1)
+        publish_connection_state({
+            "state": "online",
+            "online": True,
+        })
 
     else:
         print(f'Failed to connect, return code {rc}')
         logging.info(f'Failed to connect, return code {rc}')
+        publish_connection_state({
+            "state": "offline",
+            "online": False,
+        })
 
 
 def on_disconnect(client, userdata, rc):
     logging.info("Disconnected with result code: %s", rc)
+    publish_connection_state({
+        "state": "offline",
+        "online": False,
+    })
     reconnect_count, reconnect_delay = 0, FIRST_RECONNECT_DELAY
     while reconnect_count < MAX_RECONNECT_COUNT:
         logging.info("Reconnecting in %d seconds...", reconnect_delay)
@@ -38,6 +52,10 @@ def on_disconnect(client, userdata, rc):
         try:
             client.reconnect()
             logging.info("Reconnected successfully!")
+            publish_connection_state({
+                "state": "online",
+                "online": True,
+            })
             return
         except Exception as err:
             logging.error("%s. Reconnect failed. Retrying...", err)
@@ -47,6 +65,8 @@ def on_disconnect(client, userdata, rc):
         reconnect_count += 1
     logging.info("Reconnect failed after %s attempts. Exiting...", reconnect_count)
 
+def publish_connection_state(payload):
+    client.publish(TOPIC_CONNECTION, json.dumps(payload),retain=True)
 
 def execute_command(topic, payload):
     print("execute command")
@@ -102,6 +122,7 @@ def on_message(client, userdata, message):
             "msg": str(e),
         }))
 
+
 # ================= START =================
 
 client = mqtt.Client()
@@ -112,7 +133,7 @@ client.on_message = on_message
 client.on_disconnect = on_disconnect
 
 client.connect(MQTT_BROKER, MQTT_PORT)
-#servo = ServoSkill(PWM_GPIO, SERVO_FREQUENCY)
+# servo = ServoSkill(PWM_GPIO, SERVO_FREQUENCY)
 servo = Skillset(PI_GPIO)
 client.loop_start()
 
@@ -123,9 +144,8 @@ try:
         time.sleep(1)
 
 except KeyboardInterrupt:
-        print("\n[Service] Manuell beendet (Strg+C)")
+    print("\n[Service] Manuell beendet (Strg+C)")
 
 finally:
     client.loop_stop()
     servo.close()
-

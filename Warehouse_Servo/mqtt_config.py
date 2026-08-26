@@ -13,3 +13,4 @@ PI_GPIO=18
 # ===== Topics ======
 TOPIC_CMD = "warehouse/command"
 TOPIC_STATUS = "warehouse/status"
+TOPIC_CONNECTION = "warehouse/connection"
