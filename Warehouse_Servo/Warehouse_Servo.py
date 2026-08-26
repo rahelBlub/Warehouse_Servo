@@ -68,12 +68,19 @@ def on_disconnect(client, userdata, rc):
 def publish_connection_state(payload):
     client.publish(TOPIC_CONNECTION, json.dumps(payload),retain=True)
 
+def publish_status(state, message, payload):
+    client.publish(TOPIC_STATUS, json.dumps({
+                "state": state,
+                "msg": message,
+                "cmd": payload,
+            }),retain=True)
+
 def execute_command(topic, payload):
     print("execute command")
 
     try:
         print(f"Publishing to {topic}: {payload}")
-        client.publish(TOPIC_STATUS, payload)
+        publish_status("operational", "working", payload)
 
         if payload == "left":
             servo.left()
@@ -82,18 +89,11 @@ def execute_command(topic, payload):
         elif payload == "middle":
             servo.middle()
         else:
-            client.publish(TOPIC_STATUS, json.dumps({
-                "state": "error",
-                "msg": f"unknown command {payload}",
-            }))
+            publish_status("error", "unknown command", payload)
             return
 
     except Exception as e:
-        client.publish(TOPIC_STATUS, json.dumps({
-            "state": "error",
-            "msg": str(e),
-            "cmd": payload,
-        }))
+        publish_status("error", str(e), payload)
     finally:
         skill_lock.release()
 
@@ -117,10 +117,8 @@ def on_message(client, userdata, message):
         ).start()
 
     except Exception as e:
-        client.publish(TOPIC_STATUS, json.dumps({
-            "state": "error",
-            "msg": str(e),
-        }))
+        publish_status("error", str(e), message.payload)
+
 
 
 # ================= START =================
