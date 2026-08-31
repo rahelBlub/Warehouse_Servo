@@ -12,7 +12,7 @@ MQTT_PASS = os.getenv("MQTT_PASS")
 
 # ===== SERVO GPIO =====
 PWM_GPIO=12
-PI_GPIO=18
+PI_GPIO=os.getenv("GPIO_PIN")
 
 # ===== Topics ======
 TOPIC_CMD = "warehouse/command"
