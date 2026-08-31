@@ -67,7 +67,7 @@ def publish_status(state, message, payload):
     client.publish(TOPIC_STATUS, json.dumps({
                 "state": state,
                 "msg": message,
-                "cmd": payload,
+                "data": payload,
             }),retain=True)
 
 def execute_command(topic, payload):
@@ -75,7 +75,7 @@ def execute_command(topic, payload):
 
     try:
         print(f"Publishing to {topic}: {payload}")
-        publish_status("operational", "working", payload)
+        publish_status("operational","starting", payload)
 
         if payload == "left":
             servo.left()
@@ -84,8 +84,10 @@ def execute_command(topic, payload):
         elif payload == "middle":
             servo.middle()
         else:
-            publish_status("error", "unknown command", payload)
+            publish_status("error", f"unknown command {payload}", "no data")
             return
+
+        publish_status("operational", "done", payload)
 
     except Exception as e:
         publish_status("error", str(e), payload)
