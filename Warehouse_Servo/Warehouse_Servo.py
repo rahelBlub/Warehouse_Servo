@@ -120,8 +120,18 @@ def on_message(client, userdata, message):
 
 # ================= START =================
 
-client = mqtt.Client()
+client = mqtt.Client(client_id=CLIENT_ID)
 client.username_pw_set(MQTT_USER, MQTT_PASS)
+
+client.will_set(
+    TOPIC_CONNECTION,
+    payload=json.dumps({
+        "state": "offline",
+        "online": False,
+    }),
+    qos=1,
+    retain=True
+)
 
 client.on_connect = on_connect
 client.on_message = on_message
